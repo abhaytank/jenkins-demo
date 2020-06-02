@@ -22,6 +22,150 @@
       </div>
     </div>
   </div>
+  <div class="container">
+    <div class="my-5 shadow p-3 bg-white rounded">
+      <h2 class="font-weight-light">Steps followed</h2>
+      <div style="font-size: 1.5rem;">
+        <p class="mt-4">
+          👉🏻 Sign Up with AWS and create 2 instances of EC2 of Ubuntu Server Image 20.04, one for Jenkins and another
+          for deploying NodeJS App.
+        </p>
+        <p>
+          👉🏻 On Jenkins instance add custom security group and allow TCP connection on port 8080.
+        </p>
+        <p>
+          👉🏻 On NodeJS instance add custom security group and allow TCP connection on port 3000 for running Node App.
+        </p>
+        <p>
+          👉🏻 Install Java and Jenkins on first EC2 instance. Setup Jenkins by installing GitHub and NodeJS plugins
+          **necessary.
+        </p>
+        <p>
+          👉🏻 After creating user go to manage Jenkins > Global Tool Configuration and setup installation for NodeJS
+          with latest version of NodeJS.
+        </p>
+        <p>
+          👉🏻 Now create new Free Style Project and enter appropriate project name (For our project nodejs-jenkins).
+        </p>
+        <p>
+          👉🏻 Go to Source Code Management and select Git and enter git repository URL.
+        </p>
+        <p>
+          👉🏻 In build triggers select GitHub hook trigger for GITScm polling.
+        </p>
+        <p>
+          👉🏻 Under Build Environment Provide Node & npm bin/ folder to PATH and select NodeJS installation which was
+          setup in step 4.
+        </p>
+        <p>
+          👉🏻 In build select Execute shell
+        <pre>
+            npm install
+            chmod +x ./deploy
+            ./deploy
+          </pre>
+        </p>
+        <p>
+          👉🏻 Our Jenkins EC2 Server address <a target="_blank"
+            href="http://54.191.126.250:8080/">54.191.126.250:8080</a>
+        </p>
+        <p class="mt-4">
+          👉 Create a new NodeJS Express Project.
+        </p>
+        <p>
+          👉 Create a new file "deploy" with content
+        <pre>
+          <code>
+            #!/bin/sh
+            ssh ubuntu@NODEJS_EC2_IP
+                cd ~/jenkinsDemo
+                git pull origin master
+                curl -o-   https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh    | bash
+                . ~/.nvm/nvm.sh
+                nvm install v10.11.0
+                npm install
+                npm install -g nodemon pm2
+                pm2 restart ecosystem.config.js
+                exit
+            EOF
+          </code>
+          </pre>
+        </p>
+        <p>
+          👉 Create another file with name "ecosystem.config.js" with content
+        <pre>
+            <code>
+              module.exports = {
+                apps: [{
+                    name: "node-app name", // Ours is "jenkins-node"
+                    script: "npm",
+                    args: "start"
+                }]
+              }
+            </code>
+          </pre>
+        </p>
+        <p>
+          👉 After that push code to GitHub Repo. "jenkins-node" repo is as follow <a target="_blank"
+            href="https://github.com/abhaytank/jenkinsDemo.git">https://github.com/abhaytank/jenkinsDemo.git</a>
+        </p>
+        <p>
+          👉 Go to project repository settings and add web hooks as http://jenkins_server_ip:8080/github-webhook/
+        </p>
+        <p class="mt-4">
+          👉🏽 Until now we have setup Jenkins Server and GitHub repo.
+        </p>
+        <p>
+          👉🏽 Next we will setup NodeJS Server. Git clone your project into "jenkinsDemo" directory. If different
+          project name or directory name then change accordingly in "deploy" file which we created earlier.
+        </p>
+        <p>
+          👉🏽 We will setup ssh connection for Jenkins_Server to NodeJS_server and another ssh connection for
+          NodeJS_Server to GitHub account using following command
+        <pre>
+            <code>
+              ssh-keygen -t rsa
+              cat ~/.ssh/id_rsa.pub
+            </code>
+          </pre>
+        </p>
+        <p>
+          👉🏽 Run above code on Jenkins_Server and copy SSH key to NodeJS_Server by executing following command on
+          NodeJS_Server
+        <pre>
+            <code>
+              vim ~/.ssh/authorized_keys
+            </code>
+          </pre>
+        </p>
+        <p>
+          👉🏽 Generate same for NodeJS_Server and copy SSH key to GitHub account under SSH and GPG Keys in settings.
+        </p>
+        <p>
+          👉🏽 Now we have established connection from Jenkins_Server to NodeJS_Server using which we would execute
+          commands in "deploy" file on NodeJS_Server.
+        </p>
+        <p>
+          👉🏽 Also NodeJS_Server can now perform pull request from github repository.
+        </p>
+        <p class="mt-4">
+          🟡 WebHooks are configured to trigger on push events on Master branch of GitHub repo. Therefore on push
+          events Jenkins will perform Build and
+          Deploy operation.
+        </p>
+        <p>
+          🟡 Webapp can be accessed using URL <a href="http://52.12.174.83:3000">http://52.12.174.83:3000</a>
+        </p>
+        <p>
+          🟡 Logs can be accessed using Jenkins Dashboard.
+        </p>
+        <p class="mt-5">
+          🔥 Thus we have Successfully implemented Devops by automating build and deployment of NodeJS app using
+          Jenkins.
+        </p>
+      </div>
+    </div>
+  </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
     crossorigin="anonymous"></script>
