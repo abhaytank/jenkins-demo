@@ -1,0 +1,14 @@
+html,
+body {
+  display: grid;
+  height: 100%;
+}
+
+.container {
+  margin: auto;
+}
+
+.logo {
+  width: 35vh;
+  height: auto;
+}
