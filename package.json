@@ -1,0 +1,25 @@
+{
+  "name": "jenkins-node",
+  "version": "1.0.0",
+  "description": "Jekins demo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhaytank/jenkins-demo.git"
+  },
+  "author": "Adish Prachi Abhay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abhaytank/jenkins-demo/issues"
+  },
+  "homepage": "https://github.com/abhaytank/jenkins-demo#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4",
+    "path": "^0.12.7"
+  }
+}
