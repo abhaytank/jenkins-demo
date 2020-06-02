@@ -6,7 +6,6 @@ ssh ubuntu@52.12.174.83 <<EOF
     . ~/.nvm/nvm.sh
     nvm install v10.11.0
     npm install
-    npm install -g nodemon pm2
-    pm2 start index.js
+    node index.js
     exit
 EOF
