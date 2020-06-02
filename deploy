@@ -1,7 +1,8 @@
 #!/bin/sh
 ssh ubuntu@52.12.174.83 <<EOF
     cd ~/jenkinsDemo
-    git pull origin master -r
+    git reset HEAD --hard
+    git pull origin master
     curl -o-   https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh    | bash
     . ~/.nvm/nvm.sh
     nvm install v10.11.0
